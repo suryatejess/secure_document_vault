@@ -1,0 +1,16 @@
+services:
+
+  secure_doc_vault_db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secdocvault123
+      POSTGRES_DB: secure_doc_vault_db
+    volumes:
+      - secure_doc_vault_volume:/var/lib/postgresql/
+
+
+volumes:
+  secure_doc_vault_volume:
