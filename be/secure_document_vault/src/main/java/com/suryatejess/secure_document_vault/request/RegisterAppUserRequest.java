@@ -1,5 +1,6 @@
 package com.suryatejess.secure_document_vault.request;
 
+import com.suryatejess.secure_document_vault.enums.RoleType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,6 +14,17 @@ public class RegisterAppUserRequest {
     String email;
     String firstName;
     String lastName;
+    @NotNull
+    RoleType roleType;
+
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
 
     public String getUsername() {
         return username;
