@@ -19,7 +19,6 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     private SecretKey getSigningKey() {
-        System.out.println("entered getSigningKey");
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
@@ -51,11 +50,7 @@ public class JwtUtil {
         claims.put("name", appUser.getFirstName());
         claims.put("role", appUser.getRole_type());
 
-        System.out.println("jwtUtil - claims thing worked fine");
-
-        String createdToken = createToken(claims, String.valueOf(appUser.getAppUserId()));
-
-        System.out.println("jwtUtil - createdToken :: " + createdToken);
+        String createdToken = createToken(claims, appUser.getUsername());
 
         return createdToken;
     }
