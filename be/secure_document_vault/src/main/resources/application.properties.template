@@ -8,3 +8,11 @@ spring.datasource.password=secdocvault123
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+
+app.SECRET_KEY=bza7UJOm5B3rS/KV/Lg6g6eO5PKay2+2NqZd6//5FgM=
+auth.authTokenHeader=authToken
+
+com.suryatejess.securedocvault.cookie.name=authToken
+com.suryatejess.securedocvault.cookie.expires-in=14400
+com.suryatejess.securedocvault.jwt.secret=
+com.suryatejess.securedocvault.jwt.expires-in=14400

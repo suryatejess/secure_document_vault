@@ -1,6 +1,7 @@
 package com.suryatejess.secure_document_vault.services;
 
 import com.suryatejess.secure_document_vault.entities.AppUser;
+import com.suryatejess.secure_document_vault.exceptions.UsernameAlreadyExistsException;
 import com.suryatejess.secure_document_vault.repositories.AppUserRepository;
 import com.suryatejess.secure_document_vault.request.RegisterAppUserRequest;
 import com.suryatejess.secure_document_vault.response.AppUserDetailResponse;
@@ -22,12 +23,12 @@ public class AppUserService implements UserDetailsService{
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AppUserRepository appUserRepository;
+    private AppUserRepository appUserRepo;
 
     //TODO: write a service method that uses loadUserByUsername function and returns UserDetails.toString
     @Override
     public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        AppUser user =  appUserRepository.findByUsername(username);
+        AppUser user =  appUserRepo.findByUsername(username).get();
         if(user != null){
             return user;
         }
@@ -41,7 +42,7 @@ public class AppUserService implements UserDetailsService{
     }
 
     public List<AppUserDetailResponse> getAllAppUsers(){
-        List<AppUser> allUsers = (List<AppUser>) appUserRepository.findAll();
+        List<AppUser> allUsers = (List<AppUser>) appUserRepo.findAll();
         List<AppUserDetailResponse> response = new ArrayList<>();
 
         for(AppUser appUser : allUsers){
@@ -59,7 +60,12 @@ public class AppUserService implements UserDetailsService{
         return response;
     }
 
-    public void registerAppUser(RegisterAppUserRequest req){
+    public void registerAppUser(RegisterAppUserRequest req) throws Exception {
+
+        if(appUserRepo.findByUsername(req.getUsername()).isPresent()){
+            throw new UsernameAlreadyExistsException("user with username :: " + req.getUsername() + " already exists");
+        }
+
         AppUser appUser = new AppUser();
 
         appUser.setEmail(req.getEmail());
@@ -67,14 +73,15 @@ public class AppUserService implements UserDetailsService{
         appUser.setPassword(passwordEncoder.encode(req.getPassword()));
         appUser.setUsername(req.getUsername());
         appUser.setLastName(req.getLastName());
+        appUser.setRole_type(req.getRoleType()); 
 
-        appUserRepository.save(appUser);
+        appUserRepo.save(appUser);
     }
 
     public AppUserDetailResponse getAppUserByUsername(String username){
         AppUserDetailResponse res = new AppUserDetailResponse();
 
-        AppUser appUser = appUserRepository.findByUsername(username);
+        AppUser appUser = appUserRepo.findByUsername(username).get();
 
         res.setAppUserId(appUser.getAppUserId());
         res.setEmail(appUser.getEmail());

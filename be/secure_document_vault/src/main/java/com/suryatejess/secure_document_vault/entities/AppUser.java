@@ -1,7 +1,10 @@
 package com.suryatejess.secure_document_vault.entities;
 
+import com.suryatejess.secure_document_vault.enums.RoleType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -31,6 +34,23 @@ public class AppUser implements UserDetails {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @NotNull(message = "role_type is ought to be present for every user")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_type", nullable = false)
+    private RoleType roleType;
+
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public RoleType getRole_type() {
+        return roleType;
+    }
+
+    public void setRole_type(RoleType role_type) {
+        this.roleType = role_type;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -39,9 +59,14 @@ public class AppUser implements UserDetails {
         this.email = email;
     }
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of();
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + roleType.name()));
     }
 
     public String getPassword() {
