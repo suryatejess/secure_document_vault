@@ -37,7 +37,6 @@ public class AppUserService implements UserDetailsService{
 
     public void trigger_loadUserByUsername_method(String username){
         UserDetails appUser = loadUserByUsername(username);
-        System.out.println(appUser.toString());
         return;
     }
 
@@ -73,7 +72,7 @@ public class AppUserService implements UserDetailsService{
         appUser.setPassword(passwordEncoder.encode(req.getPassword()));
         appUser.setUsername(req.getUsername());
         appUser.setLastName(req.getLastName());
-        appUser.setRole_type(req.getRoleType()); 
+        appUser.setRole_type(req.getRoleType());
 
         appUserRepo.save(appUser);
     }

@@ -42,9 +42,7 @@ public class AppUserController {
 
     @PostMapping("/trigger_loadUserByUsername_method/{uname}")
     public void trigger_loadUserByUsername_method(@PathVariable String uname){
-        System.out.println("====    start   ====");
         appUserService.trigger_loadUserByUsername_method(uname);
-        System.out.println("====     end    ====");
     }
 
     @PostMapping("/register")
@@ -62,15 +60,10 @@ public class AppUserController {
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-            System.out.println("authentication worked fine");
-
             UserDetails userDetails = appUserService.loadUserByUsername(username);
-            System.out.println("fetching userDetails worked fine");
             AppUser appUser = (AppUser) userDetails;
-            System.out.println("appUser worked fine");
 
             String jwt = jwtUtil.generateToken(appUser);
-            System.out.println("jwt worked fine");
 
             ResponseCookie cookie = ResponseCookie.from(properties.getCookie().getName(), jwt)
                     .httpOnly(true)
@@ -80,10 +73,8 @@ public class AppUserController {
                     .sameSite("Lax")
                     .build();
 
-            System.out.println("building cookie worked fine");
 
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-            System.out.println("adding header worked fine");
 
             return ResponseEntity.ok("login successful");
         }
@@ -91,7 +82,7 @@ public class AppUserController {
             throw new WrongUserCredentials("Incorrect username or password");
         }
         catch(Exception e){
-            throw new WrongUserCredentials("emo ra babu edho ayyindhi user controller layer lo");
+            throw new WrongUserCredentials("somethings wrong");
         }
 
 
