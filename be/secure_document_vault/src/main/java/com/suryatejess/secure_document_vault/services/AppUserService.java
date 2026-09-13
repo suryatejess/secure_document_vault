@@ -28,7 +28,8 @@ public class AppUserService implements UserDetailsService{
     //TODO: write a service method that uses loadUserByUsername function and returns UserDetails.toString
     @Override
     public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        AppUser user =  appUserRepo.findByUsername(username).get();
+        AppUser user =  appUserRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("user :: " + username + " not found."));
         if(user != null){
             return user;
         }
